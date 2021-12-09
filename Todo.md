@@ -18,7 +18,6 @@ The goal of the task is to provide to the user a simple webpage where they can l
 
 The networks that you should use for this challenge are Matic/Polygon and Solana.
 
-
 The project should contain the following: 
 
 Frontend:
@@ -31,8 +30,6 @@ User address and network
 The Resources 
 
 Feel free to use whatever technologies you feel more comfortable with, no need to stick with a specific framework.
-
-
 
 Networks
 
