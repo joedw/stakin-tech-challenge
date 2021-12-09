@@ -1,0 +1,28 @@
+{
+  "name": "stakin-tech-challenge",
+  "version": "1.0.0",
+  "description": "Stakin Tech Challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joedw/stakin-tech-challenge.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "React",
+    "Polygon",
+    "Delegators",
+    "Rewards",
+    "Solana",
+    "Polygon"
+  ],
+  "author": "Joe de Wet",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joedw/stakin-tech-challenge/issues"
+  },
+  "homepage": "https://github.com/joedw/stakin-tech-challenge#readme"
+}
