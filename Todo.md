@@ -63,3 +63,9 @@ The submission should be followed with a brief explanation how to setup and spin
 
 You may be asked subsequent questions about your submission once the test is reviewed.
 
+git remote -v
+origin  https://github.com/joedw/stakin-tech-challenge.git (fetch)
+origin  https://github.com/joedw/stakin-tech-challenge.git (push)
+git config remote.origin.url https://j898wdet@protonmail.com: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.github.com/joedw/stakin-tech-challenge.git 
+https://{username:password@}github.com/{owner}/{repo}
+https://j898wdet@protonmail.com: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.github.com/joedw/stakin-tech-challenge.git 
