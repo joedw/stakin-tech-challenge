@@ -67,4 +67,5 @@ git remote -v
 origin  https://github.com/joedw/stakin-tech-challenge.git (fetch)
 origin  https://github.com/joedw/stakin-tech-challenge.git (push)
 
-
+git config --global credential.helper cache
+git config --global credential.helper 'cache --timeout=3600' //one hour
