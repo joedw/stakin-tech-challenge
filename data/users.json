@@ -1,0 +1,11 @@
+[
+    {
+        "firstName": "Joe",
+        "lastName": "de Wet",
+        "username": "jdewetno1@gmail.com",
+        "hash": "$2a$10$XoWacAcVVFIR0ga8D/ngFOR.lnAGtNMrxITT7dXWsFpLlAIRK8Ls6",
+        "id": 1,
+        "dateCreated": "2021-12-10T10:44:24.278Z",
+        "dateUpdated": "2021-12-10T10:44:24.278Z"
+    }
+]

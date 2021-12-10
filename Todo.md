@@ -69,3 +69,5 @@ origin  https://github.com/joedw/stakin-tech-challenge.git (push)
 
 git config --global credential.helper cache
 git config --global credential.helper 'cache --timeout=3600' //one hour
+
+https://jasonwatmore.com/post/2021/08/19/next-js-11-user-registration-and-login-tutorial-with-example-app
