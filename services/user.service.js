@@ -13,6 +13,7 @@ export const userService = {
     get userValue () { return userSubject.value },
     login,
     logout,
+    editprofile,
     register,
     getAll,
     getById,
@@ -37,7 +38,10 @@ function logout() {
     userSubject.next(null);
     Router.push('/account/login');
 }
-
+function editprofile(id){
+    Router.push('/users/edit/' + id);
+    
+}
 function register(user) {
     return fetchWrapper.post(`${baseUrl}/register`, user);
 }

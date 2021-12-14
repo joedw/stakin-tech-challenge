@@ -70,3 +70,15 @@ git config --global credential.helper cache
 git config --global credential.helper 'cache --timeout=3600' //one hour
 
 https://jasonwatmore.com/post/2021/08/19/next-js-11-user-registration-and-login-tutorial-with-example-app
+Polygon Staking contract on Etherscan 
+https://etherscan.io/token/0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0?a=0x5e3ef299fddf15eaa0432e6e66473ace8c13d908
+0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0
+
+ADDRESSES THAT WORK eth 
+Validator
+Mind Heart Soul logo
+Mind Heart Soul
+
+0x0DB638EffE4c87c03f663D77656f8D84A9642388   
+https://wallet.polygon.technology/staking/validators/41
+https://etherscan.io/tx/0x6e6bc4ccf09d14d63b745650cccbf681a6d327d03fa048648f1b73a2fceb91a8

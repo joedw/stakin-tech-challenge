@@ -16,7 +16,10 @@ function Nav() {
     function logout() {
         userService.logout();
     }
-
+    function editProfile(id){
+        userService.editprofile(id);
+       // /users/edit/1
+    }
     // only show nav when logged in
     if (!user) return null;
     
@@ -35,7 +38,7 @@ function Nav() {
                 {userService.userValue?.firstName + ' ' + userService.userValue?.lastName}<b className="caret"></b>
                 </a>
                 <div className="dropdown-menu">
-					<a href="#" className="dropdown-item"><i className="fa fa-user-o"></i> Profile</a>
+					<a href={"/users/edit/" + user.id} className="dropdown-item"><i className="fa fa-user-o"></i> Profile</a>
                 <div className="divider dropdown-divider"></div>
 					<a onClick={logout} href="#" className="dropdown-item"><i className="material-icons">&#xE8AC;</i> Logout</a>
                 </div>

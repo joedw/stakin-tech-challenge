@@ -32,11 +32,11 @@ function Index() {
                         <th style={{ width: '30%' }}>Address</th>
                         <th style={{ width: '30%' }}>Chain</th>
                         <th style={{ width: '30%' }}>Delegation Coin</th>
-                        <th style={{ width: '10%' }}>Delegation Amt</th>
+                     
                     </tr>
                 </thead>
                 <tbody>
-                    {delgs && delgs.map(user =>
+                    {delgs && delgs.length > 0 && delgs.map(delg =>
                         <tr key={delg.id}>
                             <td>{delg.address}</td>
                             <td>{delg.chain}</td>
