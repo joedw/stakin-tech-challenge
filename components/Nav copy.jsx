@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { NavLink } from '.';
-import { userService,delegationService } from 'services';
+import { userService } from 'services';
 
 export { Nav };
 
@@ -29,15 +29,14 @@ function Nav() {
             <div className="navbar-nav ml-auto">
                 <NavLink href="/" exact className="nav-item nav-link">Home</NavLink>
                 <NavLink href="/users" className="nav-item nav-link">Users</NavLink>
-                <NavLink href="/delegation" className="nav-item nav-link">Accounts</NavLink>
+                <a onClick={logout} className="nav-item nav-link">Logout</a>
                 <div className="nav-item dropdown">
-                <a href="#" data-toggle="dropdown" className="nav-item nav-link dropdown-toggle user-action"><img src="/avatar.png" className="avatar" alt="Avatar" /> 
+                <a href="#" data-toggle="dropdown" className="nav-item nav-link dropdown-toggle user-action"><img src="avatar.png" className="avatar" alt="Avatar" /> 
                 {userService.userValue?.firstName + ' ' + userService.userValue?.lastName}<b className="caret"></b>
                 </a>
-                <div className="dropdown-menu">
-					<a href="#" className="dropdown-item"><i className="fa fa-user-o"></i> Profile</a>
+                <div className="nav-item dropdown">
                 <div className="divider dropdown-divider"></div>
-					<a onClick={logout} href="#" className="dropdown-item"><i className="material-icons">&#xE8AC;</i> Logout</a>
+					<a href="#" className="dropdown-item"><i className="material-icons">&#xE8AC;</i> Logout</a>
                 </div>
                 </div>
             

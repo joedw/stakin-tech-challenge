@@ -49,7 +49,6 @@ SDK: https://solana-labs.github.io/solana-web3.js/
 Discord: https://discord.gg/solana
 
 
-
 Submission
 
 
