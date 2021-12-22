@@ -2,15 +2,13 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-
 import { Link } from 'components';
 import { delegationService, alertService } from 'services';
-
 export { AddEdit };
 
 function AddEdit(props) {
-    const acc = props?.acc
-    const isAddMode = !acc;
+    const delg = props?.delg
+    const isAddMode = !delg
     const router = useRouter();
     
     // form validation rules 
@@ -26,7 +24,7 @@ function AddEdit(props) {
 
     // set default form values if in edit mode
     if (!isAddMode) {
-        formOptions.defaultValues = props.acc;
+        formOptions.defaultValues = props.delg;
     }
 
     // get functions to build form with useForm() hook
@@ -36,7 +34,7 @@ function AddEdit(props) {
     function onSubmit(data) {
         return isAddMode
             ? createAcc(data)
-            : updateAcc(user.id, data);
+            : updateAcc(delg.id, data);
     }
 
     function createAcc(data) {
@@ -66,13 +64,14 @@ function AddEdit(props) {
                     <div className="invalid-feedback">{errors.address?.message}</div>
                 </div>
                 <div className="form-group col">
-                    <label for="chain" >Chain</label>
+                    <label  >Chain</label>
                     <select name="chain" id="chain" {...register('chain')} className={`form-control ${errors.chain ? 'is-invalid' : ''}`}>
                     <option value="">--Please choose an option--</option>
                     <option value="polygon">Polygon/Matic</option>
                     <option value="solana">Solana</option>
                   
                     </select>
+                    <input name="id" type="hidden" {...register('id')} ></input>
                     <div className="invalid-feedback">{errors.chain?.message}</div>
                 </div>
             </div>

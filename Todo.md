@@ -82,3 +82,9 @@ Mind Heart Soul
 0x0DB638EffE4c87c03f663D77656f8D84A9642388   
 https://wallet.polygon.technology/staking/validators/41
 https://etherscan.io/tx/0x6e6bc4ccf09d14d63b745650cccbf681a6d327d03fa048648f1b73a2fceb91a8
+
+https://www.stakingrewards.com/calculator/matic-network/
+
+0xb79fad4ca981472442f53d16365fdf0305ffd8e9
+
+https://wallet.polygon.technology/staking/validators/121   STakin

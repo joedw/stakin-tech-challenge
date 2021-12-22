@@ -3,7 +3,8 @@ import getConfig from 'next/config';
 import Router from 'next/router';
 
 import { fetchWrapper } from 'helpers';
-
+import{napi} from 'networkapi';
+napi.getAddAllStakingAmounts();
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = `${publicRuntimeConfig.apiUrl}/delegation`;
 const delgSubject = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('delg')));
@@ -24,7 +25,12 @@ function addnew(acc) {
 }
 
 function getAll() {
-    return fetchWrapper.get(baseUrl);
+   // napi.getAddAllStakingAmounts().then(function(delgs){
+
+    //    console.log(delgs);
+        return fetchWrapper.get(baseUrl);
+   //  });
+   
 }
 
 function getById(id) {

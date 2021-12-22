@@ -12,7 +12,7 @@ function Index() {
         delegationService.getAll().then(x => setDelgs(x));
     }, []);
 
-    function deleteUser(id) {
+    function deleteDelg(id) {
         setDelgs(delgs.map(x => {
             if (x.id === id) { x.isDeleting = true; }
             return x;
@@ -31,7 +31,7 @@ function Index() {
                     <tr>
                         <th style={{ width: '30%' }}>Address</th>
                         <th style={{ width: '30%' }}>Chain</th>
-                        <th style={{ width: '30%' }}>Delegation Coin</th>
+                        <th style={{ width: '30%' }}>Coin</th>
                      
                     </tr>
                 </thead>
@@ -42,8 +42,8 @@ function Index() {
                             <td>{delg.chain}</td>
                             <td>{delg.coin}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>
-                                <Link href={`/delgs/edit/${delg.id}`} className="btn btn-sm btn-primary mr-1">Edit</Link>
-                                <button onClick={() => deleteUser(delg.id)} className="btn btn-sm btn-danger btn-delete-user" disabled={delg.isDeleting}>
+                                <Link href={`/delegation/edit/${delg.id}`} className="btn btn-sm btn-primary mr-1">Edit</Link>
+                                <button onClick={() => deleteDelg(delg.id)} className="btn btn-sm btn-danger btn-delete-user" disabled={delg.isDeleting}>
                                     {delg.isDeleting 
                                         ? <span className="spinner-border spinner-border-sm"></span>
                                         : <span>Delete</span>

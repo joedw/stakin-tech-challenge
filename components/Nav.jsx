@@ -30,9 +30,9 @@ function Nav() {
           alt="Stakin Logo" />
             </div>
             <div className="navbar-nav ml-auto">
-                <NavLink href="/" exact className="nav-item nav-link">Home</NavLink>
+                <NavLink href="/" exact className="nav-item nav-link">My Staking</NavLink>
                 <NavLink href="/users" className="nav-item nav-link">Users</NavLink>
-                <NavLink href="/delegation" className="nav-item nav-link">Accounts</NavLink>
+                <NavLink href="/delegation" className="nav-item nav-link">Addresses</NavLink>
                 <div className="nav-item dropdown">
                 <a href="#" data-toggle="dropdown" className="nav-item nav-link dropdown-toggle user-action"><img src="/avatar.png" className="avatar" alt="Avatar" /> 
                 {userService.userValue?.firstName + ' ' + userService.userValue?.lastName}<b className="caret"></b>

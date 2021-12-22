@@ -3,7 +3,7 @@ import getConfig from 'next/config';
 import Router from 'next/router';
 
 import { fetchWrapper } from 'helpers';
-
+import{napi} from 'networkapi';
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = `${publicRuntimeConfig.apiUrl}/users`;
 const userSubject = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('user')));
@@ -20,17 +20,37 @@ export const userService = {
     update,
     delete: _delete
 };
-
-function login(username, password) {
+function login(username, password){
+     napi.getAddAllStakingAmounts();
+    setTimeout(function(){ 
+        console.log("Ready")
+    }, 1000);
     return fetchWrapper.post(`${baseUrl}/authenticate`, { username, password })
-        .then(user => {
-            // publish user to subscribers and store in local storage to stay logged in between page refreshes
-            userSubject.next(user);
-            localStorage.setItem('user', JSON.stringify(user));
+    .then(user => {
+ 
+           userSubject.next(user);
+           localStorage.setItem('user', JSON.stringify(user));
 
-            return user;
-        });
+           return user;
+        // publish user to subscribers and store in local storage to stay logged in between page refreshes
+       
+    });
+
+    
 }
+// function getStakedAmts(username, password,callback){
+//     napi.getAddAllStakingAmounts().then(newdelgs => {
+//         callback(username, password);
+//     }).catch(function(err) {
+//      console.log('error in napiGetStaked inside User Service');
+//      callback(username, password);
+//        });
+
+// }
+// function login(username, password) {
+ 
+//   return  getStakedAmts(username, password,doLogin);
+// }
 
 function logout() {
     // remove user from local storage, publish null to user subscribers and redirect to login page

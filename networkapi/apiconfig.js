@@ -1,0 +1,3 @@
+{
+    ethapikey : 'IUFJW3T1H3BW8HA3ZF6NYDKJVANWISJ3MT'
+}
