@@ -142,8 +142,8 @@ setInterval(function () {
 
     console.log(delgs)
   });
-  console.log("Every 30 secondes");
-}, 30000);
+  console.log("Every 60 secondes");
+}, 60000);
 console.log("now");
 // export const napi = {
 //   getAddAllStakingAmounts
@@ -161,7 +161,7 @@ cron.schedule('*/1 * * * *', () => {
   console.log("Task is running every 1 minuteS " + new Date());
   getAddAllStakingAmounts().then(function (delgs) {
 
-    console.log("Cron Job GetStakingAmts Ran at " + new Date(),delgs);
+    console.log("Cron Job GetStakingAmts DONE, Ran at " + new Date());
   });
 });
 app.listen(2400, () => {
