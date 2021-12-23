@@ -21,10 +21,7 @@ export const userService = {
     delete: _delete
 };
 function login(username, password){
-     napi.getAddAllStakingAmounts();
-    setTimeout(function(){ 
-        console.log("Ready")
-    }, 1000);
+
     return fetchWrapper.post(`${baseUrl}/authenticate`, { username, password })
     .then(user => {
  
