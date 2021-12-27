@@ -1,5 +1,6 @@
 {
-    "ethapikey": "IUFJW3T1H3BW8HA3ZF6NYDKJVANWISJ3MT",
-    "solanabeachapiurl"  : "https://prod-api.solana.surf/v1/account/@pk/transactions?"
+    "ethapikey"          : "IUFJW3T1H3BW8HA3ZF6NYDKJVANWISJ3MT",
+    "solanabeachapiurl"  : "https://prod-api.solana.surf/v1/account/@pk/transactions?",
+    "polygonurl"         :      "https://sentinel.matic.network/api/v2/validators/121/delegators?limit=0&offset=0"
   
 }

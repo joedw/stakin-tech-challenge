@@ -5,16 +5,14 @@
         "coin": "MATIC",
         "chain": "polygon",
         "dateUpdated": "2021-12-15T16:32:12.310Z",
-        "userid": 1,
-        "amt": 25900
+        "userid": 1
     },
     {
-        "id": 1,
-        "address": "xPrCrPNL5ZpbZe2yDUVf8LJBHaoPJ8YkC6SVE3sa1pM",
+        "id": 2,
+        "address": "2RRBCVLXQYJWqaut9zFdwWJmrQbXg4xqmReLiCWfE7o4",
         "coin": "SOL",
         "chain": "solana",
         "dateUpdated": "2021-12-15T16:32:12.310Z",
-        "userid": 1,
-        "amt": 318900.91
+        "userid": 1
     }
 ]

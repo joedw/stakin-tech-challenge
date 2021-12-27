@@ -5,43 +5,87 @@ const apiconfig = require('./apiconfig.json');
 var api = require('etherscan-api').init(apiconfig.ethapikey);
 const fs = require('fs');
 const express = require('express');
-   const axios = require('axios');
+const axios = require('axios');
 const app = express();
 const delgfile = '/home/moses/Projects/stakin-tech-challenge/data/delgs.json';
+const Big = require('big.js');
 //const delgfile = rootfolder + '/data/delgs.json';
 
-function getStakingAmtETH(address) {
-  var promise = new Promise(function (resolve, reject) {
-    api = require('etherscan-api').init(apiconfig.ethapikey);
-    var tokentransfers = api.account.tokentx(address);
-    var delvalue = 0;
-    tokentransfers.then(function (transferData) {
-      //   console.log('Token Transfers:',transferData.result);
-      //   var keys = Object.keys(transferData);
-      //   console.log('Props:',keys);
-      var trans3 = transferData.result.filter(function (el) {
+// function getStakingAmtETH(address) {
+//   var promise = new Promise(function (resolve, reject) {
+//     api = require('etherscan-api').init(apiconfig.ethapikey);
+//     var tokentransfers = api.account.tokentx(address);
+//     var delvalue = 0;
+//     tokentransfers.then(function (transferData) {
+//       //   console.log('Token Transfers:',transferData.result);
+//       //   var keys = Object.keys(transferData);
+//       //   console.log('Props:',keys);
+//       var trans3 = transferData.result.filter(function (el) {
 
-        // TODO Function with More logic to calculate real staking value , balance of all transactions Restaked and Rewards taken  ;
-        return el.contractAddress.toLowerCase() == ValidatorShareAddr.toLowerCase();
-      });
-      //console.log('Transaction', trans3);
-      if (trans3 && trans3.length > 0) {
-        delvalue = Number(trans3[0].value);
-        delvalue = Math.floor(delvalue / 1000000000000000000);
-        console.log('Transaction Value', delvalue);
-        resolve(delvalue);
+//         // TODO Function with More logic to calculate real staking value , balance of all transactions Restaked and Rewards taken  ;
+//         return el.contractAddress.toLowerCase() == ValidatorShareAddr.toLowerCase();
+//       });
+//       //console.log('Transaction', trans3);
+//       if (trans3 && trans3.length > 0) {
+//         delvalue = Number(trans3[0].value);
+//         delvalue = Math.floor(delvalue / 1000000000000000000);
+//         console.log('Transaction Value', delvalue);
+//         resolve(delvalue);
 
-      } else {
-        console.log('Nothing Found getStakingAmtETH');
-        resolve(delvalue);
-      }
-    }).catch(err => {
-      console.log('Error in Transfer Token method eth api ', err.message);
-      reject(err.message);
-    });
+//       } else {
+//         console.log('Nothing Found getStakingAmtETH');
+//         resolve(delvalue);
+//       }
+//     }).catch(err => {
+//       console.log('Error in Transfer Token method eth api ', err.message);
+//       reject(err.message);
+//     });
 
-  });
-  return promise;
+//   });
+//   return promise;
+
+// }
+
+
+function convertGweiExp(exp,decimals){
+  var beeeg = new Big(exp);
+
+ var retno = beeeg.div(1000000000000000000).toFixed(decimals);
+// console.log('beeeg:',beeeg.div(1000000000000000000).toFixed(decimals));
+ return Number(retno);
+
+}
+function getStakingMatic(address) {
+var promise = new Promise(function (resolve, reject) {
+
+ var urlpolygon= apiconfig.polygonurl;
+ let retobj = { stakeamt : 0,stakerewardsamt : 0};
+
+ axios.get(urlpolygon ).then(res => {
+
+   res.data.result.forEach((delg) => {
+
+     if (delg.address == address){
+     //  console.log('delegator stake :',convertGweiExp(delg.stake.toString(),2));
+       retobj.stakeamt = convertGweiExp(delg.stake.toString(),2);
+       retobj.stakerewardsamt = convertGweiExp(delg.claimedReward.toString(),2);
+
+      console.log('delegator retobj :',retobj);
+      resolve(retobj);
+     }
+
+
+     });
+});
+
+ //resolve(0);
+
+}).catch(err => {
+ console.log('Error in getStakingMatic method api ', err.message);
+ reject(err.message);
+});
+
+return promise;
 
 }
 
@@ -92,7 +136,7 @@ async function getAddAllStakingAmounts() {
   for (var i = 0; i < delgs.length; i++) {
     delg = delgs[i];
     if (delg.chain == 'polygon') {
-      proms.push(getStakingAmtETH(delg.address));
+      proms.push(getStakingMatic(delg.address));
 
     }
     if (delg.chain == 'solana') {
@@ -102,10 +146,16 @@ async function getAddAllStakingAmounts() {
   var promise = new Promise(function (resolve, reject) {
 
     Promise.all(proms).then(function (values) {
-      for (var i = 0; i < delgs.length; i++) {
+      for (var i = 0; i < delgs.length -1; i++) {
         delg = delgs[i];
         if (values[i]) {
-          delg.amt = values[i];
+          if(values[i].stakeamt){
+            delg.amt = values[i].stakeamt;
+            delg.stakingrewardsamt = values[i].stakerewardsamt;
+          }else{
+            delg.amt = values[i];
+          }
+         
         }
         newdelgs.push(delg);
       }
