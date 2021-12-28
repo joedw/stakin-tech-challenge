@@ -1,6 +1,8 @@
 {
     "ethapikey"          : "IUFJW3T1H3BW8HA3ZF6NYDKJVANWISJ3MT",
-    "solanabeachapiurl"  : "https://prod-api.solana.surf/v1/account/@pk/transactions?",
-    "polygonurl"         :      "https://sentinel.matic.network/api/v2/validators/121/delegators?limit=0&offset=0"
+    "solanabeachapiurl"  : "https://api.solanabeach.io/v1/validator/@pk/",
+    "polygonurl"         :      "https://sentinel.matic.network/api/v2/validators/121/delegators?limit=0&offset=0",
+    "solanabeachtoken"  : "279d92fc-0bf7-4cc5-b449-edc9bdb1b721",
+    "stakinsolvotingaddress" : "4PsiLMyoUQ7QRn1FFiFCvej4hsUTFzfvJnyN4bj1tmSN"
   
 }

@@ -5,14 +5,18 @@
         "coin": "MATIC",
         "chain": "polygon",
         "dateUpdated": "2021-12-15T16:32:12.310Z",
-        "userid": 1
+        "userid": 1,
+        "amt" : 0,
+        "stakingrewardsamt" : 0
     },
     {
-        "id": 1,
-        "address": "2RRBCVLXQYJWqaut9zFdwWJmrQbXg4xqmReLiCWfE7o4",
+        "id": 2,
+        "address": "xPrCrPNL5ZpbZe2yDUVf8LJBHaoPJ8YkC6SVE3sa1pM",
         "coin": "SOL",
         "chain": "solana",
         "dateUpdated": "2021-12-15T16:32:12.310Z",
-        "userid": 1
+        "userid": 1,
+        "amt" : 0,
+        "stakingrewardsamt" : 0
     }
 ]

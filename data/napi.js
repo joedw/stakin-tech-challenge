@@ -2,13 +2,22 @@ const addruser = '0x325c13ec4f14bfb6bee50b14adbcb25afcaf5a01'; //     '0x2f50b1e
 const addrPolygonStaking = '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0'; //Polygon Staking contract addr TODO find all ValidatorShareAddr SmartContract Addr verify ?.
 const ValidatorShareAddr = '0xC7757805B983eE1b6272c1840c18e66837dE858E';
 const apiconfig = require('./apiconfig.json');
-var api = require('etherscan-api').init(apiconfig.ethapikey);
+//var api = require('etherscan-api').init(apiconfig.ethapikey);
 const fs = require('fs');
 const express = require('express');
 const axios = require('axios');
 const app = express();
 const delgfile = '/home/moses/Projects/stakin-tech-challenge/data/delgs.json';
 const Big = require('big.js');
+var urlbeach = apiconfig.solanabeachapiurl.replace('@pk', apiconfig.stakinsolvotingaddress);
+var token = apiconfig.solanabeachtoken;
+const instance = axios.create({
+  baseURL: urlbeach,
+  timeout: 1000,
+  headers: {
+    'Authorization': 'Bearer ' + token
+  }
+});
 //const delgfile = rootfolder + '/data/delgs.json';
 
 // function getStakingAmtETH(address) {
@@ -47,72 +56,76 @@ const Big = require('big.js');
 // }
 
 
-function convertGweiExp(exp,decimals){
+function convertGweiExp(exp, decimals) {
   var beeeg = new Big(exp);
 
- var retno = beeeg.div(1000000000000000000).toFixed(decimals);
-// console.log('beeeg:',beeeg.div(1000000000000000000).toFixed(decimals));
- return Number(retno);
-
-}
-function getStakingMatic(address) {
-var promise = new Promise(function (resolve, reject) {
-
- var urlpolygon= apiconfig.polygonurl;
- let retobj = { stakeamt : 0,stakerewardsamt : 0};
-
- axios.get(urlpolygon ).then(res => {
-
-   res.data.result.forEach((delg) => {
-
-     if (delg.address == address){
-     //  console.log('delegator stake :',convertGweiExp(delg.stake.toString(),2));
-       retobj.stakeamt = convertGweiExp(delg.stake.toString(),2);
-       retobj.stakerewardsamt = convertGweiExp(delg.claimedReward.toString(),2);
-
-      console.log('delegator retobj :',retobj);
-      resolve(retobj);
-     }
-
-
-     });
-});
-
- //resolve(0);
-
-}).catch(err => {
- console.log('Error in getStakingMatic method api ', err.message);
- reject(err.message);
-});
-
-return promise;
+  var retno = beeeg.div(1000000000000000000).toFixed(decimals);
+  // console.log('beeeg:',beeeg.div(1000000000000000000).toFixed(decimals));
+  return Number(retno);
 
 }
 
- function getStakingAmtSolana(address) {
+function getStakingMatic(address, id) {
   var promise = new Promise(function (resolve, reject) {
 
-    var urlbeach = apiconfig.solanabeachapiurl.replace('@pk',address);
-    
-    axios.get(urlbeach ).then(res => {
+    var urlpolygon = apiconfig.polygonurl;
+    var retobj = {
+      id :0,
+      stakeamt: 0,
+      stakerewardsamt: 0
+    };
 
-      res.data.forEach((trans) => {
-        // console.log(trans.instructions);
-          trans.instructions.forEach((element) => {
-    
-            var stakedSol = 0;
-            if(element.parsed.Withdraw ){
-              stakedSol =Number(element.parsed.Withdraw.lamports.toFixed(2));
-              stakedSol =(stakedSol/1000000000);
-              console.log('stakedSol :',stakedSol);
-              resolve(stakedSol);
-            }
-          
-          });
-        });
-});
- 
+    axios.get(urlpolygon).then(res => {
+
+      res.data.result.forEach((delg) => {
+
+        if (delg.address == address) {
+          //  console.log('delegator stake :',convertGweiExp(delg.stake.toString(),2));
+          retobj.stakeamt = convertGweiExp(delg.stake.toString(), 2);
+          retobj.stakerewardsamt = convertGweiExp(delg.claimedReward.toString(), 2);
+          retobj.id = id;
+          console.log('delegator retobj :', retobj);
+          resolve(retobj);
+        }
+
+
+      });
+    });
+
     //resolve(0);
+
+  }).catch(err => {
+    console.log('Error in getStakingMatic method api ', err.message);
+    reject(err.message);
+  });
+
+  return promise;
+
+}
+
+function getStakingAmtSolana(address,id) {
+  var promise = new Promise(function (resolve, reject) {
+    var retobj = {
+      id :0,
+      stakeamt: 0,
+      stakerewardsamt: 0
+    };
+    instance.get('/delegators?limit=1000&offset=0').then(res => {
+
+      res.data.forEach((delg) => {
+        if(delg.pubkey == address){
+          var stakedSol = Number(delg.data.stake.delegation.stake);
+          stakedSol = (stakedSol / 1000000000);
+          console.log('stakedSol :', stakedSol);
+          retobj.stakeamt = stakedSol;
+          retobj.stakerewardsamt = 0;
+          retobj.id = id;
+          resolve(retobj);
+
+        }
+      
+      });
+    });
 
   }).catch(err => {
     console.log('Error in getStakingAmtSolana method eth api ', err.message);
@@ -122,120 +135,71 @@ return promise;
   return promise;
 
 }
-
-async function getAddAllStakingAmounts() {
-
-  let proms = [];
-  let newdelgs = [];
-  let delg = {};
-  // let rawdata = fs.readFileSync(delgfile);
-
-  //var delgs = JSON.parse(rawdata);
-  let delgs = require('../data/delgs.json');
-  //let delgs = require('data/delgs.json');
-  for (var i = 0; i < delgs.length; i++) {
-    delg = delgs[i];
-    if (delg.chain == 'polygon') {
-      proms.push(getStakingMatic(delg.address));
-
-    }
-    if (delg.chain == 'solana') {
-      proms.push(getStakingAmtSolana(delg.address));
-    }
-  }
-  var promise = new Promise(function (resolve, reject) {
-
-    Promise.all(proms).then(function (values) {
-      for (var i = 0; i < delgs.length -1; i++) {
-        delg = delgs[i];
-        if (values[i]) {
-          if(values[i].stakeamt){
-            delg.amt = values[i].stakeamt;
-            delg.stakingrewardsamt = values[i].stakerewardsamt;
-          }else{
-            delg.amt = values[i];
-          }
-         
-        }
-        newdelgs.push(delg);
-      }
-      // console.log('done?');
-      //fs.unlink(delgfile, (err) => {
-      //  if (err) throw err;
-      //  console.log('File successfully deleted');
-      fs.writeFileSync('../data/delgs.json', JSON.stringify(newdelgs, null, 4));
-      console.log('New file written .Done', newdelgs);
-      //return newdelgs;
-      resolve(newdelgs)
-
-      // });
-      // fs.writeFile('../data/delgs.json', JSON.stringify(newdelgs, null, 4));
-      // console.log('Done');
-      //   resolve(newdelgs);
-    }).catch(function (err) {
-      // console.log('err', err);
-      reject('Error');
-    });
-
-  });
-
-  return promise;
+function done(delgs){
+    fs.writeFileSync('../data/delgs.json', JSON.stringify(delgs, null, 4));
+    console.log('New file written .Done', delgs);
+    console.log("Cron Job GetStakingAmts DONE, Ran at " + new Date());
+// console.log("Every 60 secondes");
+return delgs;
 
 }
-// getAddAllStakingAmounts().then(function(delgs){
+async function getAddAllStakingAmounts(callback) {
 
-//     console.log(delgs)
-//  });
+    let proms = [];
+    let newdelgs = [];
+    let delg = {};
 
-setInterval(function () {
-  getAddAllStakingAmounts().then(function (delgs) {
+    let delgs = require('../data/delgs.json');
+   // console.log('delgs found', delgs);
+    for (var i = 0; i < delgs.length; i++) {
+      delg = delgs[i];
+      if (delg.chain == 'polygon') {
+        proms.push(getStakingMatic(delg.address,delg.id));
 
-    console.log(delgs)
-  });
-  console.log("Every 60 secondes");
-}, 60000);
-console.log("now");
-// export const napi = {
-//   getAddAllStakingAmounts
+      }
+      if (delg.chain == 'solana') {
+        proms.push(getStakingAmtSolana(delg.address, delg.id));
+      }
+    }
+   
+        Promise.all(proms).then(values => {
+          console.log('values found', values);
+            for (var j = 0; j < values.length; j++) {
+              delg = delgs.filter(function(x){ return x.id==values[j].id;}); 
+              delg = delg[0];   // find(x => x.id == values[i].id);
+              console.log('value found', values[j]);
+              delg["amt"] = values[j].stakeamt ? values[j].stakeamt : 0;
+              delg["stakingrewardsamt"] = values[j]["stakingrewardsamt"] ? values[j].stakerewardsamt : 0;
+              console.log('delg found', delg);
+              newdelgs.push(delg);
 
-// };
-// module.exports = {
-//   getAddAllStakingAmounts:  (delgs) =>{
-//     return getAddAllStakingAmounts(delgs);
-//   }
-// };
+            }
+                
+             callback(newdelgs);
+   
+            }).catch(function (err) {
+              console.log('err proms all', err.message);
+              callback('Error' + err.message);
+          });
+
+      
+
+  
+    }
+     getAddAllStakingAmounts(done);
+
+      
+
+    // const cron = require('node-cron');
+    // cron.schedule('*/1 * * * *', () => {
+
+    //   console.log("Task is running every 1 minuteS " + new Date());
+    //   getAddAllStakingAmounts(done);
 
 
-const cron = require('node-cron');
-cron.schedule('*/1 * * * *', () => {
-  console.log("Task is running every 1 minuteS " + new Date());
-  getAddAllStakingAmounts().then(function (delgs) {
+    // });
+    // app.listen(2400, () => {
+    //   console.log("Server started at port 2400")
+    // });
 
-    console.log("Cron Job GetStakingAmts DONE, Ran at " + new Date());
-  });
-});
-app.listen(2400, () => {
-  console.log("Server started at port 2400")
-});
-
-//TODO Later check this code if usable
-
-// var balance = api.account.balance(addr);
-// balance.then(function(balanceData){
-//   console.log('Balance:',balanceData);
-// });
-//  var transactions = api.account.txlist(addruser);
-//  var thash = '';
-//  transactions.then(function(transData){
-//   // console.log(transData.result);
-//   // var keys = Object.keys(transData);
-//    //console.log('Props:',keys);
-//    //var trans = JSON.parse(transData[0]);
-//     var trans2 =  transData.result.filter(function (el) {
-//       //return el.hash == '0x892eb652cd7106eba9f0264edd16b34aa137c522bd7d3bdc0e9a8cf129f5d189';
-//       //return el.hash == '0x892eb652cd7106eba9f0264edd16b34aa137c522bd7d3bdc0e9a8cf129f5d189';
-//       return el.to.toLowerCase() == ValidatorShareAddr.toLowerCase();
-//     });
-//    // console.log('Transaction',trans2);
-//     tblock = trans2.block;
-//   });
+   
