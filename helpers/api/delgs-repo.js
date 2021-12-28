@@ -4,6 +4,7 @@ const fs = require('fs');
 let delgs = require('data/delgs.json');
 
 
+
 export const delgsRepo = {
     getAll: () => delgs,
     getById: id => delgs.find(x => x.id.toString() === id.toString()),

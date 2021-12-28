@@ -88,3 +88,7 @@ https://www.stakingrewards.com/calculator/matic-network/
 0xb79fad4ca981472442f53d16365fdf0305ffd8e9
 
 https://wallet.polygon.technology/staking/validators/121   STakin
+
+https://sentinel.matic.network/api/v2/validators/121/delegators?limit=20&offset=0
+
+https://sentinel.matic.network/api/v2/validators/121/delegators

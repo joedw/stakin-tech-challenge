@@ -4,13 +4,16 @@ import Router from 'next/router';
 
 import { fetchWrapper } from 'helpers';
 
-
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = `${publicRuntimeConfig.apiUrl}/delegation`;
 const delgSubject = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('delg')));
+const userSubject = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('user')));
 
+
+const userid = user.id;
 export const delegationService = {
     acc: delgSubject.asObservable(),
+    user: userSubject.asObservable(),
     get userValue () { return delgSubject.value },
     addnew,
     getAll,
@@ -25,11 +28,9 @@ function addnew(acc) {
 }
 
 function getAll() {
-   // napi.getAddAllStakingAmounts().then(function(delgs){
 
-    //    console.log(delgs);
         return fetchWrapper.get(baseUrl);
-   //  });
+       // return fetchWrapper.get(`${baseUrl}/${userService}`);
    
 }
 

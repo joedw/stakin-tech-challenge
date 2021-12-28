@@ -18,3 +18,9 @@ now open another terminal in root folder and just run npm run dev to start the a
 
 you can navigate to localhost:3000 in your browser to open the app . 
 
+The Data folder contains a little service cronjob that fetches data from Etherscan and Solana Beach Api to update the json file that contains the data . 
+
+On Etherscan it fetches the initial staking amount if it can find it for Matic Staking , the other transactions are not yet found and that will take some time to develop and research . Staking rewards,Restake etc .. 
+
+On Solana it fetches the initial Staking amount as well , the other transactions are  not yet calculated or found , will take some time to develop and research that . 
+
