@@ -46,7 +46,7 @@ function Index() {
                                 <td>{delg.chain}</td>
                                 <td>{delg.coin}</td>
                                 <td>{delg.amt}</td>
-                                <td>{delg.rewards}</td>
+                                <td>{delg.stakingrewardsamt}</td>
                                 
                                 
                             </tr>

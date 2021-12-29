@@ -69,11 +69,11 @@ function getStakingAmtSolana(address) {
   //let delgs = require('data/delgs.json');
   for (var i = 0; i < delgs.length; i++) {
     delg = delgs[i];
-    if (delg.chain == 'polygon') {
+    if (delg.chain == 'Polygon') {
       proms.push(getStakingAmtETH(delg.address));
 
     }
-    if (delg.chain == 'solana') {
+    if (delg.chain == 'Solana') {
       proms.push(getStakingAmtSolana(delg.address));
     }
   }

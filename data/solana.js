@@ -33,33 +33,7 @@ const axios = require('axios');
 var token = apiconfig.solanabeachtoken;
 async function makeRequest() {
 
-  // const config = {
-  //   method: 'get',
-  //   url: urlbeach,
-  //   headers: {
-  //     'Authorization': 'bearer ' + token
-  //   }
-  // };
-
-  // let res = await axios(config);
-
-  // console.log(res.data);
-  // res.data.forEach((trans) => {
-  //   console.log('trans :', trans);
-  //   // trans.instructions.forEach((element) => {
-
-  //   //   var stakedSol = 0;
-  //   //   if(element.parsed.Withdraw ){
-
-  //   //     stakedSol = (element.parsed.Withdraw.lamports/1000000000).toFixed(2);
-  //   //     console.log('stakedSol :',stakedSol);;
-  //   //     //console.log(stakedSol);
-  //   //   }
-
-  //   // });
-  // });
-
-
+ 
   const instance = axios.create({
     baseURL: urlbeach,
     timeout: 1000,
@@ -70,21 +44,16 @@ async function makeRequest() {
 
   instance.get('/delegators?limit=1000&offset=0')
     .then(res => {
-     // console.log(res.data);
-   
-
       res.data.forEach((delg) => { 
 
         if(delg.pubkey == pk_del){
           var stakedSol = Number(delg.data.stake.delegation.stake)
           stakedSol = (stakedSol / 1000000000);
           console.log('stakedSol :', stakedSol);
-          //console.log(delg.data.stake.delegation.stake);
-          //elg.data.stake.delegation.stake
+    
         }
       });
-      //response.data[0].pubkey
-      //return response.data;
+
     })
 }
 

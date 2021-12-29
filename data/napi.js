@@ -18,42 +18,6 @@ const instance = axios.create({
     'Authorization': 'Bearer ' + token
   }
 });
-//const delgfile = rootfolder + '/data/delgs.json';
-
-// function getStakingAmtETH(address) {
-//   var promise = new Promise(function (resolve, reject) {
-//     api = require('etherscan-api').init(apiconfig.ethapikey);
-//     var tokentransfers = api.account.tokentx(address);
-//     var delvalue = 0;
-//     tokentransfers.then(function (transferData) {
-//       //   console.log('Token Transfers:',transferData.result);
-//       //   var keys = Object.keys(transferData);
-//       //   console.log('Props:',keys);
-//       var trans3 = transferData.result.filter(function (el) {
-
-//         // TODO Function with More logic to calculate real staking value , balance of all transactions Restaked and Rewards taken  ;
-//         return el.contractAddress.toLowerCase() == ValidatorShareAddr.toLowerCase();
-//       });
-//       //console.log('Transaction', trans3);
-//       if (trans3 && trans3.length > 0) {
-//         delvalue = Number(trans3[0].value);
-//         delvalue = Math.floor(delvalue / 1000000000000000000);
-//         console.log('Transaction Value', delvalue);
-//         resolve(delvalue);
-
-//       } else {
-//         console.log('Nothing Found getStakingAmtETH');
-//         resolve(delvalue);
-//       }
-//     }).catch(err => {
-//       console.log('Error in Transfer Token method eth api ', err.message);
-//       reject(err.message);
-//     });
-
-//   });
-//   return promise;
-
-// }
 
 
 function convertGweiExp(exp, decimals) {
@@ -153,23 +117,24 @@ async function getAddAllStakingAmounts(callback) {
    // console.log('delgs found', delgs);
     for (var i = 0; i < delgs.length; i++) {
       delg = delgs[i];
-      if (delg.chain == 'polygon') {
+      if (delg.chain == 'Polygon') {
         proms.push(getStakingMatic(delg.address,delg.id));
 
       }
-      if (delg.chain == 'solana') {
+      if (delg.chain == 'Solana') {
         proms.push(getStakingAmtSolana(delg.address, delg.id));
       }
     }
    
         Promise.all(proms).then(values => {
+          //setTimeout(myGreeting, 5000)
           console.log('values found', values);
             for (var j = 0; j < values.length; j++) {
               delg = delgs.filter(function(x){ return x.id==values[j].id;}); 
-              delg = delg[0];   // find(x => x.id == values[i].id);
+              delg = delg[0];  
               console.log('value found', values[j]);
               delg["amt"] = values[j].stakeamt ? values[j].stakeamt : 0;
-              delg["stakingrewardsamt"] = values[j]["stakingrewardsamt"] ? values[j].stakerewardsamt : 0;
+              delg["stakingrewardsamt"] = values[j].stakerewardsamt ? values[j].stakerewardsamt : 0;
               console.log('delg found', delg);
               newdelgs.push(delg);
 
@@ -186,20 +151,20 @@ async function getAddAllStakingAmounts(callback) {
 
   
     }
-     getAddAllStakingAmounts(done);
+     //getAddAllStakingAmounts(done);
 
       
 
-    // const cron = require('node-cron');
-    // cron.schedule('*/1 * * * *', () => {
+    const cron = require('node-cron');
+    cron.schedule('*/1 * * * *', () => {
 
-    //   console.log("Task is running every 1 minuteS " + new Date());
-    //   getAddAllStakingAmounts(done);
+      console.log("Task is running every 1 minuteS " + new Date());
+      getAddAllStakingAmounts(done);
 
 
-    // });
-    // app.listen(2400, () => {
-    //   console.log("Server started at port 2400")
-    // });
+    });
+    app.listen(2400, () => {
+      console.log("Server started at port 2400")
+    });
 
    

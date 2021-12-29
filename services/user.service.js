@@ -3,7 +3,7 @@ import getConfig from 'next/config';
 import Router from 'next/router';
 
 import { fetchWrapper } from 'helpers';
-import{napi} from 'networkapi';
+
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = `${publicRuntimeConfig.apiUrl}/users`;
 const userSubject = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('user')));
@@ -35,19 +35,7 @@ function login(username, password){
 
     
 }
-// function getStakedAmts(username, password,callback){
-//     napi.getAddAllStakingAmounts().then(newdelgs => {
-//         callback(username, password);
-//     }).catch(function(err) {
-//      console.log('error in napiGetStaked inside User Service');
-//      callback(username, password);
-//        });
 
-// }
-// function login(username, password) {
- 
-//   return  getStakedAmts(username, password,doLogin);
-// }
 
 function logout() {
     // remove user from local storage, publish null to user subscribers and redirect to login page

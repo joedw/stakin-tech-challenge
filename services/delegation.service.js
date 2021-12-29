@@ -10,12 +10,11 @@ const delgSubject = new BehaviorSubject(process.browser && JSON.parse(localStora
 const userSubject = new BehaviorSubject(process.browser && JSON.parse(localStorage.getItem('user')));
 
 
-const userid = user.id;
 export const delegationService = {
-    acc: delgSubject.asObservable(),
+    delg: delgSubject.asObservable(),
     user: userSubject.asObservable(),
     get userValue () { return delgSubject.value },
-    addnew,
+    add,
     getAll,
     getById,
     update,
@@ -23,13 +22,16 @@ export const delegationService = {
 };
 
 
-function addnew(acc) {
-    return fetchWrapper.post(`${baseUrl}/add`, acc);
+function add(delg) {
+    return fetchWrapper.post(`${baseUrl}/add`, delg);
 }
 
 function getAll() {
 
         return fetchWrapper.get(baseUrl);
+
+        //return fetchWrapper.get(`${baseUrl}?id=${id}`);
+       /// return fetchWrapper.get(`${baseUrl}/${id}`);
        // return fetchWrapper.get(`${baseUrl}/${userService}`);
    
 }

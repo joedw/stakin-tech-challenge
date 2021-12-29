@@ -3,12 +3,14 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { Link } from 'components';
-import { delegationService, alertService } from 'services';
+import {userService, delegationService, alertService } from 'services';
 export { AddEdit };
 
 function AddEdit(props) {
-    const delg = props?.delg
-    const isAddMode = !delg
+    const delg = props?.delg;
+    const user = userService.userValue;
+    const  userid = user.id;
+    const isAddMode = !delg;
     const router = useRouter();
     
     // form validation rules 
@@ -38,9 +40,9 @@ function AddEdit(props) {
     }
 
     function createAcc(data) {
-        return delegationService.addnew(data)
+        return delegationService.add(data)
             .then(() => {
-                alertService.success('Wallet added', { keepAfterRouteChange: true });
+                alertService.success('Address added', { keepAfterRouteChange: true });
                 router.push('.');
             })
             .catch(alertService.error);
@@ -49,7 +51,7 @@ function AddEdit(props) {
     function updateAcc(id, data) {
         return delegationService.update(id, data)
             .then(() => {
-                alertService.success('Wallet updated', { keepAfterRouteChange: true });
+                alertService.success('Address updated', { keepAfterRouteChange: true });
                 router.push('..');
             })
             .catch(alertService.error);
@@ -67,11 +69,11 @@ function AddEdit(props) {
                     <label  >Chain</label>
                     <select name="chain" id="chain" {...register('chain')} className={`form-control ${errors.chain ? 'is-invalid' : ''}`}>
                     <option value="">--Please choose an option--</option>
-                    <option value="polygon">Polygon/Matic</option>
-                    <option value="solana">Solana</option>
+                    <option value="Polygon">Polygon</option>
+                    <option value="Solana">Solana</option>
                   
                     </select>
-                    <input name="id" type="hidden" {...register('id')} ></input>
+                    <input name="userid" type="hidden" {...register('userid')} value={userid} ></input>
                     <div className="invalid-feedback">{errors.chain?.message}</div>
                 </div>
             </div>

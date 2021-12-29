@@ -7,5 +7,23 @@
         "id": 1,
         "dateCreated": "2021-12-10T10:44:24.278Z",
         "dateUpdated": "2021-12-10T10:44:24.278Z"
+    },
+    {
+        "firstName": "admin",
+        "lastName": "admin",
+        "username": "admin",
+        "hash": "$2a$10$lwgxJz28yWmwVlM7KybOF.rbg3nH9DonLNEtqqvgJqsfUNJ9ld/X2",
+        "id": 2,
+        "dateCreated": "2021-12-29T08:28:48.030Z",
+        "dateUpdated": "2021-12-29T08:28:48.030Z"
+    },
+    {
+        "firstName": "test",
+        "lastName": "test",
+        "username": "test",
+        "hash": "$2a$10$OUCVJzdim4EHPNynYwwg2uLjm.f78N6tfboUvoP32VpYuSBVsdidC",
+        "id": 3,
+        "dateCreated": "2021-12-29T08:44:36.945Z",
+        "dateUpdated": "2021-12-29T08:44:36.945Z"
     }
 ]

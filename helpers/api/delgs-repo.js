@@ -1,9 +1,5 @@
 const fs = require('fs');
-
-// delgs in JSON file for simplicity, store in a db for production applications       getAll: () => delgs,
 let delgs = require('data/delgs.json');
-
-
 
 export const delgsRepo = {
     getAll: () => delgs,
@@ -14,7 +10,6 @@ export const delgsRepo = {
     delete: _delete
 };
 
-    
 function create(delg) {
     // generate new delg id
     delg.id = delgs.length ? Math.max(...delgs.map(x => x.id)) + 1 : 1;

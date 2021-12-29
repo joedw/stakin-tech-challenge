@@ -12,10 +12,11 @@ export const fetchWrapper = {
 };
 
 function get(url) {
-    const requestOptions = {
+    var requestOptions = {
         method: 'GET',
         headers: authHeader(url)
     };
+
     return fetch(url, requestOptions).then(handleResponse);
 }
 
@@ -65,7 +66,11 @@ function handleResponse(response) {
     //console.log('text:',response.text());
     return response.text().then(text => {
         //console.log('text:',text);
-        const data = text && JSON.parse(text);
+        var data = text && JSON.parse(text);
+        if(response.url.indexOf('/delegation') > -1 && response.url.indexOf('/delegation/') == -1){
+            const user = userService.userValue;
+            data = data.filter(x => x.userid === user.id);
+        }
         //console.log(text);
         if (!response.ok) {
             if ([401, 403].includes(response.status) && userService.userValue) {

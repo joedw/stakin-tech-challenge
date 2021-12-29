@@ -3,20 +3,29 @@
         "id": 1,
         "address": "0x325c13ec4f14bfb6bee50b14adbcb25afcaf5a01",
         "coin": "MATIC",
-        "chain": "polygon",
+        "chain": "Polygon",
         "dateUpdated": "2021-12-15T16:32:12.310Z",
         "userid": 1,
-        "amt" : 0,
-        "stakingrewardsamt" : 0
+        "amt": 25900,
+        "stakingrewardsamt": 0
     },
     {
         "id": 2,
         "address": "xPrCrPNL5ZpbZe2yDUVf8LJBHaoPJ8YkC6SVE3sa1pM",
         "coin": "SOL",
-        "chain": "solana",
+        "chain": "Solana",
         "dateUpdated": "2021-12-15T16:32:12.310Z",
         "userid": 1,
-        "amt" : 0,
-        "stakingrewardsamt" : 0
+        "amt": 319396.008324201,
+        "stakingrewardsamt": 0
+    },
+    {
+        "address": "0x936faa74cb08b4d9a51ddd4b2838d9ca5980bfad",
+        "chain": "Polygon",
+        "userid": "1",
+        "coin": "MATIC",
+        "id": 3,
+        "dateCreated": "2021-12-29T09:27:49.426Z",
+        "dateUpdated": "2021-12-29T09:27:49.426Z"
     }
 ]
