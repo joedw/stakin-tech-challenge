@@ -37,6 +37,8 @@
         "coin": "MATIC",
         "id": 4,
         "dateCreated": "2021-12-29T18:07:19.789Z",
-        "dateUpdated": "2021-12-29T18:07:19.789Z"
+        "dateUpdated": "2021-12-29T18:07:19.789Z",
+        "amt": 50090877.18,
+        "stakingrewardsamt": 0
     }
 ]

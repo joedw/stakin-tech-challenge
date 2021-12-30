@@ -1,8 +1,5 @@
-const addruser = '0x325c13ec4f14bfb6bee50b14adbcb25afcaf5a01'; //     '0x2f50b1ec6111ac19f5873d34fbe5e1d784c25dbf';
-const addrPolygonStaking = '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0'; //Polygon Staking contract addr TODO find all ValidatorShareAddr SmartContract Addr verify ?.
-const ValidatorShareAddr = '0xC7757805B983eE1b6272c1840c18e66837dE858E';
 const apiconfig = require('./apiconfig.json');
-//var api = require('etherscan-api').init(apiconfig.ethapikey);
+const cron = require('node-cron');
 const fs = require('fs');
 const express = require('express');
 const axios = require('axios');
@@ -24,7 +21,7 @@ function convertGweiExp(exp, decimals) {
   var beeeg = new Big(exp);
 
   var retno = beeeg.div(1000000000000000000).toFixed(decimals);
-  // console.log('beeeg:',beeeg.div(1000000000000000000).toFixed(decimals));
+
   return Number(retno);
 
 }
@@ -34,7 +31,7 @@ function getStakingMatic(address, id) {
 
     var urlpolygon = apiconfig.polygonurl;
     var retobj = {
-      id :0,
+      id: 0,
       stakeamt: 0,
       stakerewardsamt: 0
     };
@@ -67,17 +64,17 @@ function getStakingMatic(address, id) {
 
 }
 
-function getStakingAmtSolana(address,id) {
+function getStakingAmtSolana(address, id) {
   var promise = new Promise(function (resolve, reject) {
     var retobj = {
-      id :0,
+      id: 0,
       stakeamt: 0,
       stakerewardsamt: 0
     };
     instance.get('/delegators?limit=1000&offset=0').then(res => {
 
       res.data.forEach((delg) => {
-        if(delg.pubkey == address){
+        if (delg.pubkey == address) {
           var stakedSol = Number(delg.data.stake.delegation.stake);
           stakedSol = (stakedSol / 1000000000);
           console.log('stakedSol :', stakedSol);
@@ -87,7 +84,7 @@ function getStakingAmtSolana(address,id) {
           resolve(retobj);
 
         }
-      
+
       });
     });
 
@@ -99,72 +96,74 @@ function getStakingAmtSolana(address,id) {
   return promise;
 
 }
-function done(delgs){
-    fs.writeFileSync('../data/delgs.json', JSON.stringify(delgs, null, 4));
-    console.log('New file written .Done', delgs);
-    console.log("Cron Job GetStakingAmts DONE, Ran at " + new Date());
-// console.log("Every 60 secondes");
-return delgs;
+
+function done(delgs) {
+  fs.writeFileSync('../data/delgs.json', JSON.stringify(delgs, null, 4));
+  console.log('New file written .Done', delgs);
+  console.log("Cron Job GetStakingAmts DONE, Ran at " + new Date());
+  // console.log("Every 60 secondes");
+  return delgs;
 
 }
 async function getAddAllStakingAmounts(callback) {
 
-    let proms = [];
-    let newdelgs = [];
-    let delg = {};
+  let proms = [];
+  let newdelgs = [];
+  let delg = {};
 
-    let delgs = require('../data/delgs.json');
-   // console.log('delgs found', delgs);
-    for (var i = 0; i < delgs.length; i++) {
-      delg = delgs[i];
-      if (delg.chain == 'Polygon') {
-        proms.push(getStakingMatic(delg.address,delg.id));
+  let delgs = require('../data/delgs.json');
+  // console.log('delgs found', delgs);
+  for (var i = 0; i < delgs.length; i++) {
+    delg = delgs[i];
+    if (delg.chain == 'Polygon') {
+      proms.push(getStakingMatic(delg.address, delg.id));
 
-      }
-      if (delg.chain == 'Solana') {
-        proms.push(getStakingAmtSolana(delg.address, delg.id));
-      }
     }
-   
-        Promise.all(proms).then(values => {
-          //setTimeout(myGreeting, 5000)
-          console.log('values found', values);
-            for (var j = 0; j < values.length; j++) {
-              delg = delgs.filter(function(x){ return x.id==values[j].id;}); 
-              delg = delg[0];  
-              console.log('value found', values[j]);
-              delg["amt"] = values[j].stakeamt ? values[j].stakeamt : 0;
-              delg["stakingrewardsamt"] = values[j].stakerewardsamt ? values[j].stakerewardsamt : 0;
-              console.log('delg found', delg);
-              newdelgs.push(delg);
-
-            }
-                
-             callback(newdelgs);
-   
-            }).catch(function (err) {
-              console.log('err proms all', err.message);
-              callback('Error' + err.message);
-          });
-
-      
-
-  
+    if (delg.chain == 'Solana') {
+      proms.push(getStakingAmtSolana(delg.address, delg.id));
     }
-     //getAddAllStakingAmounts(done);
+  }
 
-      
+  Promise.all(proms).then(values => {
+    //setTimeout(myGreeting, 5000)
+    console.log('values found', values);
+    for (var j = 0; j < values.length; j++) {
+      delg = delgs.filter(function (x) {
+        return x.id == values[j].id;
+      });
+      delg = delg[0];
+      console.log('value found', values[j]);
+      delg["amt"] = values[j].stakeamt ? values[j].stakeamt : 0;
+      delg["stakingrewardsamt"] = values[j].stakerewardsamt ? values[j].stakerewardsamt : 0;
+      console.log('delg found', delg);
+      newdelgs.push(delg);
 
-    const cron = require('node-cron');
-    cron.schedule('*/1 * * * *', () => {
+    }
 
-      console.log("Task is running every 1 minuteS " + new Date());
-      getAddAllStakingAmounts(done);
+    callback(newdelgs);
+
+  }).catch(function (err) {
+    console.log('err proms all', err.message);
+    callback('Error' + err.message);
+  });
 
 
-    });
-    app.listen(2400, () => {
-      console.log("Server started at port 2400")
-    });
 
-   
+
+}
+//getAddAllStakingAmounts(done);
+
+
+
+
+app.listen(2400, () => {
+  console.log("Server started at port 2400");
+
+  cron.schedule('*/1 * * * *', () => {
+
+    console.log("Task is running every 1 minuteS " + new Date());
+    getAddAllStakingAmounts(done);
+
+
+  });
+});
